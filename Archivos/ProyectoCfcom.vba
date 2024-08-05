@@ -27,15 +27,59 @@ Sub RellenarFormularioYCrearCuadros()
 
     ' Rellenar campos de formulario utilizando nombres únicos
     For Each cc In wdDoc.ContentControls
-        Select Case cc.Title
-            Case "NombreCampo"
-                cc.Range.Text = ws.Cells(2, 1).Value ' Dato en A2
-            Case "ApellidoCampo"
-                cc.Range.Text = ws.Cells(2, 2).Value ' Dato en B2
-            Case "Fecha1Campo"
-                cc.Range.Text = ws.Cells(2, 3).Value ' Dato en C2
-            Case "Fecha2Campo"
-                cc.Range.Text = ws.Cells(2, 4).Value ' Dato en D2
+         Select Case cc.Title
+        Case "NombreEmpresa"
+                cc.Range.Text = ws.Cells(1, 11).Value ' Dato en K1
+            Case "CifEmpresa"
+                cc.Range.Text = ws.Cells(2, 11).Value ' Dato en K2
+            Case "NombreJefe"
+                cc.Range.Text = ws.Cells(3, 11).Value ' Dato en K3
+            Case "CargoJefe"
+                cc.Range.Text = ws.Cells(4, 11).Value ' Dato en K4
+            Case "DniJefe"
+                cc.Range.Text = ws.Cells(5, 11).Value ' Dato en K5
+            Case "MailEmpresa"
+                cc.Range.Text = ws.Cells(6, 11).Value ' Dato en K6
+            Case "TelefonoEmpresa"
+                cc.Range.Text = ws.Cells(7, 11).Value ' Dato en K7
+            Case "TutorEmpresa"
+                cc.Range.Text = ws.Cells(8, 11).Value ' Dato en K8
+            Case "DniTutor"
+                cc.Range.Text = ws.Cells(9, 11).Value ' Dato en K9
+            Case "HorasSemanales"
+                cc.Range.Text = ws.Cells(10, 11).Value ' Dato en K10
+            Case "ConvenioAplicable"
+                cc.Range.Text = ws.Cells(11, 11).Value ' Dato en K11
+            Case "NombreTrabajador"
+                cc.Range.Text = ws.Cells(12, 11).Value ' Dato en K12
+            Case "DniTrabajador"
+                cc.Range.Text = ws.Cells(13, 11).Value ' Dato en K13
+            Case "FechaNacimientoTrabajador"
+                cc.Range.Text = ws.Cells(14, 11).Value ' Dato en K14
+            Case "FechaInicioContrato"
+                cc.Range.Text = ws.Cells(15, 11).Value ' Dato en K15
+            Case "FechaFinContrato"
+                cc.Range.Text = ws.Cells(16, 11).Value ' Dato en K16
+            Case "OcupacionOPuesto"
+                cc.Range.Text = ws.Cells(17, 11).Value ' Dato en K17
+            Case "CNO"
+                cc.Range.Text = ws.Cells(18, 11).Value ' Dato en K18
+            Case "ProvinciaPuesto"
+                cc.Range.Text = ws.Cells(19, 11).Value ' Dato en K19
+            Case "HorasContratoAñoUno"
+                cc.Range.Text = ws.Cells(20, 11).Value ' Dato en K20
+            Case "HorasContratoAñoDos"
+                cc.Range.Text = ws.Cells(21, 11).Value ' Dato en K21
+            Case "HorasItinerario"
+                cc.Range.Text = ws.Cells(22, 11).Value ' Dato en K22
+            Case "DiasLaboral"
+                cc.Range.Text = ws.Cells(23, 11).Value ' Dato en K23
+            Case "HorarioLaboral"
+                cc.Range.Text = ws.Cells(24, 11).Value ' Dato en K24
+            Case "HorarioFormacion"
+                cc.Range.Text = ws.Cells(25, 11).Value ' Dato en K25
+            Case "DireccionCentroTrabajo"
+                cc.Range.Text = ws.Cells(26, 11).Value ' Dato en K26
         End Select
     Next cc
 
