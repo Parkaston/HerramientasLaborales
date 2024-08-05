@@ -83,7 +83,8 @@ Sub RellenarFormularioYCrearCuadros()
         End Select
     Next cc
 
- Insertar saltos de página hasta llegar a la página 4
+    
+ ' Insertar saltos de página hasta llegar a la página 4
     For i = 1 To 3
         wdDoc.Content.InsertBreak Type:=7 ' wdPageBreak
     Next i
@@ -150,4 +151,5 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
+
 
