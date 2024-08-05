@@ -27,7 +27,7 @@ Sub RellenarFormularioYCrearCuadros()
 
     ' Rellenar campos de formulario utilizando nombres únicos
     For Each cc In wdDoc.ContentControls
-         Select Case cc.Title
+        Select Case cc.Title
         Case "NombreEmpresa"
                 cc.Range.Text = ws.Cells(1, 11).Value ' Dato en K1
             Case "CifEmpresa"
@@ -83,44 +83,48 @@ Sub RellenarFormularioYCrearCuadros()
         End Select
     Next cc
 
- ' Generar cuadros para cada fila de Excel en el mismo documento
-' Encontrar la última fila con datos en la primera columna
-ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+ Insertar saltos de página hasta llegar a la página 4
+    For i = 1 To 3
+        wdDoc.Content.InsertBreak Type:=7 ' wdPageBreak
+    Next i
 
-' Mover el cursor al final del documento
-wdDoc.Content.InsertParagraphAfter
-wdDoc.Content.Paragraphs.Last.Range.Select
-
-' Recorrer cada fila con datos
-For fila = 2 To ultimaFila
-    ' Insertar una nueva tabla de una celda para el cuadro
+    ' Insertar el título en la página 4
     Set rango = wdDoc.Content.Paragraphs.Last.Range
-    Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
-    tabla.Borders.Enable = True
+    rango.Text = "4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
+    rango.InsertParagraphAfter
 
-    ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
-  
-With tabla.Cell(1, 1).Range
-    .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-            "Formación a impartir: Código: [CÓDIGO] Denominación: [DENOMINACIÓN]" & vbCrLf & _
-            ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
-            ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
-            ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
-            "Nombre Centro: [NOMBRE CENTRO] CIF/NIF/NIE: [CIF/NIF/NIE]" & vbCrLf & _
-            "URL (Entidades de teleformación)" & vbCrLf & _
-            "Dirección: [DIRECCIÓN] CP: [CP] Municipio: [MUNICIPIO]" & vbCrLf & _
-            "Provincia: [PROVINCIA] Teléfono: [TELÉFONO] Correo electrónico: [CORREO ELECTRÓNICO]" & vbCrLf & _
-            "D./Dña. [NOMBRE] en concepto de [CONCEPTO] NIF/NIE: [NIF/NIE]" & vbCrLf & _
-            "Tutor/a del centro – D./Dña. [TUTOR/A] NIF/NIE: [NIF/NIE TUTOR/A]"
-End With
+    ' Definir la última fila con datos (esto debe ser ajustado según tus datos)
+    ultimaFila = 10 ' Ejemplo: 10 filas de datos
 
-    ' Mover el cursor fuera de la tabla y añadir un salto de página
-    If fila < ultimaFila Then
-        Set rango = wdDoc.Content
-        rango.Collapse Direction:=0 ' wdCollapseEnd
-        rango.InsertBreak Type:=7 ' wdPageBreak
-    End If
-Next fila
+    ' Recorrer cada fila con datos
+    For fila = 2 To ultimaFila
+        ' Insertar una nueva tabla de una celda para el cuadro
+        Set rango = wdDoc.Content.Paragraphs.Last.Range
+        Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
+        tabla.Borders.Enable = True
+
+        ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
+        With tabla.Cell(1, 1).Range
+            .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
+                    "Formación a impartir: Código: [CÓDIGO]" & vbTab & vbTab & vbTab & "Denominación: [DENOMINACIÓN]" & vbCrLf & _
+                    ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
+                    ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
+                    ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
+                    "Nombre Centro: [NOMBRE CENTRO]" & vbTab & vbTab & vbTab & "CIF/NIF/NIE: [CIF/NIF/NIE]" & vbCrLf & _
+                    "URL (Entidades de teleformación)" & vbCrLf & _
+                    "Dirección: [DIRECCIÓN]" & vbTab & vbTab & vbTab & "CP: [CP]" & vbTab & vbTab & vbTab & "Municipio: [MUNICIPIO]" & vbCrLf & _
+                    "Provincia: [PROVINCIA]" & vbTab & vbTab & vbTab & "Teléfono: [TELÉFONO]" & vbTab & vbTab & vbTab & "Correo electrónico: [CORREO ELECTRÓNICO]" & vbCrLf & _
+                    "D./Dña. [NOMBRE]" & vbTab & vbTab & vbTab & "en concepto de" & vbTab & vbTab & vbTab & "NIF/NIE: [NIF/NIE]" & vbCrLf & _
+                    "Tutor/a del centro – D./Dña. [TUTOR/A]" & vbTab & vbTab & vbTab & "NIF/NIE: [NIF/NIE TUTOR/A]"
+        End With
+
+        ' Mover el cursor fuera de la tabla y añadir un salto de página
+        If fila < ultimaFila Then
+            Set rango = wdDoc.Content
+            rango.Collapse Direction:=0 ' wdCollapseEnd
+            rango.InsertParagraphAfter
+        End If
+    Next fila
 
 
     ' Solicitar al usuario el nombre del archivo de salida
@@ -146,3 +150,4 @@ Next fila
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
+
