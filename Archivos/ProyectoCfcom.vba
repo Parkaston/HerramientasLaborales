@@ -91,6 +91,13 @@ ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
 wdDoc.Content.InsertParagraphAfter
 wdDoc.Content.Paragraphs.Last.Range.Select
 
+   ' Insertar el texto antes de generar los cuadros
+    wdApp.Selection.ParagraphFormat.Alignment = wdAlignParagraphLeft
+    wdApp.Selection.Font.Bold = True
+    wdApp.Selection.TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
+    wdApp.Selection.TypeParagraph
+    wdApp.Selection.Font.Bold = False
+
 ' Recorrer cada fila con datos
 For fila = 2 To ultimaFila
     ' Insertar una nueva tabla de una celda para el cuadro
@@ -99,19 +106,19 @@ For fila = 2 To ultimaFila
     tabla.Borders.Enable = True
 
     ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
-    With tabla.Cell(1, 1).Range
-        .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-                "Formación a impartir: Código: [CÓDIGO]" & vbTab & vbTab & vbTab & "Denominación: [DENOMINACIÓN]" & vbCrLf & _
-                ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
-                ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
-                ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
-                "Nombre Centro: [NOMBRE CENTRO]" & vbTab & vbTab & vbTab & "CIF/NIF/NIE: [CIF/NIF/NIE]" & vbCrLf & _
-                "URL (Entidades de teleformación)" & vbCrLf & _
-                "Dirección: [DIRECCIÓN]" & vbTab & vbTab & vbTab & "CP: [CP]" & vbTab & vbTab & vbTab & "Municipio: [MUNICIPIO]" & vbCrLf & _
-                "Provincia: [PROVINCIA]" & vbTab & vbTab & vbTab & "Teléfono: [TELÉFONO]" & vbTab & vbTab & vbTab & "Correo electrónico: [CORREO ELECTRÓNICO]" & vbCrLf & _
-                "D./Dña. [NOMBRE]" & vbTab & vbTab & vbTab & "en concepto de" & vbTab & vbTab & vbTab & "NIF/NIE: [NIF/NIE]" & vbCrLf & _
-                "Tutor/a del centro – D./Dña. [TUTOR/A]" & vbTab & vbTab & vbTab & "NIF/NIE: [NIF/NIE TUTOR/A]"
-    End With
+   With tabla.Cell(1, 1).Range
+            .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
+                    "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & vbCrLf & _
+                    ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
+                    ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
+                    ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
+                    "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
+                    "URL (Entidades de teleformación)" & vbCrLf & _
+                    "Dirección: Calle Chiva, 20, B                    CP:        46018                      Municipio: VALENCIA" & vbCrLf & _
+                    "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
+                    "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
+                    "Tutor/a del centro – D./Dña. ROCÍO LÓPEZ ROMERO                 NIF/NIE  26752178G"
+        End With
 
     ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
     wdDoc.Content.InsertParagraphAfter
@@ -147,4 +154,5 @@ rango.InsertBreak Type:=7 ' wdPageBreak
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
+
 
