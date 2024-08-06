@@ -24,6 +24,62 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdApp = CreateObject("Word.Application")
     wdApp.Visible = True ' Opcional, para ver Word mientras se ejecuta el script
     Set wdDoc = wdApp.Documents.Open("C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
+' Generar cuadros para cada fila de Excel en el mismo documento
+' Encontrar la última fila con datos en la primera columna
+ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+
+' Mover el cursor al final del documento
+wdDoc.Content.InsertParagraphAfter
+wdDoc.Content.Paragraphs.Last.Range.Select
+
+   ' Insertar el texto antes de generar los cuadros
+    wdApp.Selection.ParagraphFormat.Alignment = wdAlignParagraphLeft
+    wdApp.Selection.Font.Bold = True
+    wdApp.Selection.TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
+    wdApp.Selection.TypeParagraph
+    wdApp.Selection.Font.Bold = False
+
+' Recorrer cada fila con datos
+For fila = 2 To ultimaFila
+    ' Insertar una nueva tabla de una celda para el cuadro
+    Set rango = wdDoc.Content.Paragraphs.Last.Range
+    Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
+    tabla.Borders.Enable = True
+
+    ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
+   With tabla.Cell(1, 1).Range
+            .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
+                    "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & vbCrLf & _
+                    ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
+                    ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
+                    ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
+                    "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
+                    "URL (Entidades de teleformación)" & vbCrLf & _
+                    "Dirección: Calle Chiva, 20, B                    CP:        46018                      Municipio: VALENCIA" & vbCrLf & _
+                    "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
+                    "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
+                    "Tutor/a del centro – D./Dña. ROCÍO LÓPEZ ROMERO                 NIF/NIE  26752178G"
+        End With
+
+    ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
+    wdDoc.Content.InsertParagraphAfter
+    wdDoc.Content.Paragraphs.Last.Range.Select
+Next fila
+
+' Insertar un salto de página después del último cuadro
+Set rango = wdDoc.Content
+rango.Collapse Direction:=0 ' wdCollapseEnd
+rango.InsertBreak Type:=7 ' wdPageBreak
+
+
+
+
+
+
+
+
+
+
 
     ' Rellenar campos de formulario utilizando nombres únicos
     For Each cc In wdDoc.ContentControls
@@ -83,52 +139,7 @@ Sub RellenarFormularioYCrearCuadros()
         End Select
     Next cc
 
- ' Generar cuadros para cada fila de Excel en el mismo documento
-' Encontrar la última fila con datos en la primera columna
-ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
-
-' Mover el cursor al final del documento
-wdDoc.Content.InsertParagraphAfter
-wdDoc.Content.Paragraphs.Last.Range.Select
-
-   ' Insertar el texto antes de generar los cuadros
-    wdApp.Selection.ParagraphFormat.Alignment = wdAlignParagraphLeft
-    wdApp.Selection.Font.Bold = True
-    wdApp.Selection.TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
-    wdApp.Selection.TypeParagraph
-    wdApp.Selection.Font.Bold = False
-
-' Recorrer cada fila con datos
-For fila = 2 To ultimaFila
-    ' Insertar una nueva tabla de una celda para el cuadro
-    Set rango = wdDoc.Content.Paragraphs.Last.Range
-    Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
-    tabla.Borders.Enable = True
-
-    ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
-   With tabla.Cell(1, 1).Range
-            .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-                    "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & vbCrLf & _
-                    ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
-                    ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
-                    ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
-                    "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
-                    "URL (Entidades de teleformación)" & vbCrLf & _
-                    "Dirección: Calle Chiva, 20, B                    CP:        46018                      Municipio: VALENCIA" & vbCrLf & _
-                    "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
-                    "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
-                    "Tutor/a del centro – D./Dña. ROCÍO LÓPEZ ROMERO                 NIF/NIE  26752178G"
-        End With
-
-    ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
-    wdDoc.Content.InsertParagraphAfter
-    wdDoc.Content.Paragraphs.Last.Range.Select
-Next fila
-
-' Insertar un salto de página después del último cuadro
-Set rango = wdDoc.Content
-rango.Collapse Direction:=0 ' wdCollapseEnd
-rango.InsertBreak Type:=7 ' wdPageBreak
+ 
 
 
     ' Solicitar al usuario el nombre del archivo de salida
