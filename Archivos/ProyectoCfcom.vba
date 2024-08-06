@@ -154,5 +154,3 @@ rango.InsertBreak Type:=7 ' wdPageBreak
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
-
-
