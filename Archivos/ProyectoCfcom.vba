@@ -56,7 +56,7 @@ Sub RellenarFormularioYCrearCuadros()
         ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
         With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-                    "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & vbCrLf & _
+                    "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & _
                     ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
                     ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
                     ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
