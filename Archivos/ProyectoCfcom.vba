@@ -47,16 +47,27 @@ Sub RellenarFormularioYCrearCuadros()
     pos.InsertParagraphAfter
     pos.Collapse Direction:=0 ' wdCollapseEnd
 
-    ' Recorrer cada fila con datos
-    For fila = 2 To ultimaFila
+    ' Recorrer las filas desde la última hasta la primera
+    For fila = ultimaFila To 2 Step -1
+        ' Obtener los datos de la fila actual
+        Dim codigo As String
+        Dim denominacion As String
+        Dim tutor As String
+        Dim nif As String
+
+        codigo = ws.Cells(fila, 1).Value
+        denominacion = ws.Cells(fila, 9).Value
+        tutor = ws.Cells(fila, 6).Value
+        nif = ws.Cells(13, 11).Value
+
         ' Insertar una nueva tabla de una celda para el cuadro
         Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=1, NumColumns:=1)
         tabla.Borders.Enable = True
 
-        ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
+        ' Insertar el contenido del cuadro en la celda de la tabla con los datos de Excel
         With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-                    "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & _
+                    "Formación a impartir: Código: " & codigo & " Denominación: " & denominacion & vbCrLf & _
                     ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
                     ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
                     ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
@@ -65,7 +76,7 @@ Sub RellenarFormularioYCrearCuadros()
                     "Dirección: Calle Chiva, 20, B                    CP:        46018                      Municipio: VALENCIA" & vbCrLf & _
                     "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
                     "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
-                    "Tutor/a del centro – D./Dña. ROCÍO LÓPEZ ROMERO                 NIF/NIE  26752178G"
+                    "Tutor/a del centro – D./Dña. " & tutor & "                 NIF/NIE  " & nif
         End With
 
         ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
