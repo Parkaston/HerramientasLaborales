@@ -9,6 +9,7 @@ Sub RellenarFormularioYCrearCuadros()
     Dim ultimaFila As Long
     Dim rango As Object
     Dim tabla As Object
+    Dim pos As Object
 
     ' Verificar si la hoja de trabajo existe
     On Error Resume Next
@@ -16,7 +17,7 @@ Sub RellenarFormularioYCrearCuadros()
     On Error GoTo 0
 
     If ws Is Nothing Then
-        MsgBox "La hoja de trabajo 'CÁLCULO' no existe.", vbCritical
+        MsgBox "La hoja de trabajo 'CALCULO' no existe.", vbCritical
         Exit Sub
     End If
 
@@ -24,26 +25,32 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdApp = CreateObject("Word.Application")
     wdApp.Visible = True ' Opcional, para ver Word mientras se ejecuta el script
     Set wdDoc = wdApp.Documents.Open("C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
-    
-' Generar cuadros para cada fila de Excel en el mismo documento
- ' Encontrar la última fila con datos en la primera columna
+
+    ' Encontrar la última fila con datos en la primera columna
     ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
 
     ' Mover el cursor al marcador en la cuarta página
     wdDoc.Bookmarks("CuartaPagina").Select
 
     ' Insertar el título antes de generar los cuadros
-    wdApp.Selection.ParagraphFormat.Alignment = wdAlignParagraphLeft
-    wdApp.Selection.Font.Bold = True
-    wdApp.Selection.TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
-    wdApp.Selection.TypeParagraph
-    wdApp.Selection.Font.Bold = False
+    With wdApp.Selection
+        .ParagraphFormat.Alignment = wdAlignParagraphLeft
+        .Font.Bold = True
+        .TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
+        .TypeParagraph
+        .Font.Bold = False
+    End With
+
+    ' Inicializar la posición del cursor después del título
+    Set pos = wdApp.Selection.Range
+    pos.Collapse Direction:=0 ' wdCollapseEnd
+    pos.InsertParagraphAfter
+    pos.Collapse Direction:=0 ' wdCollapseEnd
 
     ' Recorrer cada fila con datos
     For fila = 2 To ultimaFila
         ' Insertar una nueva tabla de una celda para el cuadro
-        Set rango = wdApp.Selection.Range
-        Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
+        Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=1, NumColumns:=1)
         tabla.Borders.Enable = True
 
         ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
@@ -62,20 +69,19 @@ Sub RellenarFormularioYCrearCuadros()
         End With
 
         ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
-        wdApp.Selection.Collapse Direction:=0 ' wdCollapseEnd
-        wdApp.Selection.TypeParagraph
+        pos.Collapse Direction:=0 ' wdCollapseEnd
+        pos.InsertParagraphAfter
+        pos.Collapse Direction:=0 ' wdCollapseEnd
+
+        ' Añadir un salto de párrafo para separar cada cuadro
+        pos.InsertBreak Type:=7 ' wdPageBreak
+        pos.Collapse Direction:=0 ' wdCollapseEnd
     Next fila
-
-' Insertar un salto de página después del último cuadro
-Set rango = wdDoc.Content
-rango.Collapse Direction:=0 ' wdCollapseEnd
-rango.InsertBreak Type:=7 ' wdPageBreak
-
 
     ' Rellenar campos de formulario utilizando nombres únicos
     For Each cc In wdDoc.ContentControls
-         Select Case cc.Title
-        Case "NombreEmpresa"
+        Select Case cc.Title
+            Case "NombreEmpresa"
                 cc.Range.Text = ws.Cells(1, 11).Value ' Dato en K1
             Case "CifEmpresa"
                 cc.Range.Text = ws.Cells(2, 11).Value ' Dato en K2
@@ -130,12 +136,9 @@ rango.InsertBreak Type:=7 ' wdPageBreak
         End Select
     Next cc
 
- 
-
-
     ' Solicitar al usuario el nombre del archivo de salida
     nombreArchivo = InputBox("Ingrese el nombre del archivo de salida (sin extensión):", "Guardar como")
-    
+
     ' Asegurarse de que el usuario no haya dejado el nombre en blanco
     If nombreArchivo = "" Then
         MsgBox "No se ingresó un nombre de archivo. El archivo no se guardará.", vbExclamation
@@ -147,11 +150,11 @@ rango.InsertBreak Type:=7 ' wdPageBreak
         wdDoc.SaveAs rutaArchivo
         MsgBox "Archivo guardado en: " & rutaArchivo, vbInformation
     End If
-    
+
     ' Cerrar el documento y Word
     wdDoc.Close False
     wdApp.Quit
-    
+
     ' Liberar objetos
     Set wdDoc = Nothing
     Set wdApp = Nothing
