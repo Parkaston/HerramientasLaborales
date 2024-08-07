@@ -24,30 +24,30 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdApp = CreateObject("Word.Application")
     wdApp.Visible = True ' Opcional, para ver Word mientras se ejecuta el script
     Set wdDoc = wdApp.Documents.Open("C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
+    
 ' Generar cuadros para cada fila de Excel en el mismo documento
-' Encontrar la última fila con datos en la primera columna
-ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+ ' Encontrar la última fila con datos en la primera columna
+    ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
 
-' Mover el cursor al final del documento
-wdDoc.Content.InsertParagraphAfter
-wdDoc.Content.Paragraphs.Last.Range.Select
+    ' Mover el cursor al marcador en la cuarta página
+    wdDoc.Bookmarks("CuartaPagina").Select
 
-   ' Insertar el texto antes de generar los cuadros
+    ' Insertar el título antes de generar los cuadros
     wdApp.Selection.ParagraphFormat.Alignment = wdAlignParagraphLeft
     wdApp.Selection.Font.Bold = True
     wdApp.Selection.TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
     wdApp.Selection.TypeParagraph
     wdApp.Selection.Font.Bold = False
 
-' Recorrer cada fila con datos
-For fila = 2 To ultimaFila
-    ' Insertar una nueva tabla de una celda para el cuadro
-    Set rango = wdDoc.Content.Paragraphs.Last.Range
-    Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
-    tabla.Borders.Enable = True
+    ' Recorrer cada fila con datos
+    For fila = 2 To ultimaFila
+        ' Insertar una nueva tabla de una celda para el cuadro
+        Set rango = wdApp.Selection.Range
+        Set tabla = wdDoc.Tables.Add(Range:=rango, NumRows:=1, NumColumns:=1)
+        tabla.Borders.Enable = True
 
-    ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
-   With tabla.Cell(1, 1).Range
+        ' Insertar el contenido del cuadro en la celda de la tabla con placeholders
+        With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
                     "Formación a impartir: Código:         SIN GENERAR             Denominación: COMPETENCIAS DIGITALES BÁSICAS" & vbCrLf & vbCrLf & _
                     ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
@@ -61,24 +61,15 @@ For fila = 2 To ultimaFila
                     "Tutor/a del centro – D./Dña. ROCÍO LÓPEZ ROMERO                 NIF/NIE  26752178G"
         End With
 
-    ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
-    wdDoc.Content.InsertParagraphAfter
-    wdDoc.Content.Paragraphs.Last.Range.Select
-Next fila
+        ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
+        wdApp.Selection.Collapse Direction:=0 ' wdCollapseEnd
+        wdApp.Selection.TypeParagraph
+    Next fila
 
 ' Insertar un salto de página después del último cuadro
 Set rango = wdDoc.Content
 rango.Collapse Direction:=0 ' wdCollapseEnd
 rango.InsertBreak Type:=7 ' wdPageBreak
-
-
-
-
-
-
-
-
-
 
 
     ' Rellenar campos de formulario utilizando nombres únicos
