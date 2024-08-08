@@ -194,7 +194,7 @@ Sub RellenarFormularioYCrearCuadros()
         horas = ws.Cells(fila, 5).Value
         modalidad = ws.Cells(fila, 7).Value
         codCentro = ws.Cells(fila, 8).Value
-        columna6 = ws.Cells(fila, 6).Value
+        columna6 = ws.Cells(25, 11).Value
 
         ' Rellenar la tabla con los datos
         With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
