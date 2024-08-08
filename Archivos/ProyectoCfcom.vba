@@ -49,7 +49,7 @@ Sub RellenarFormularioYCrearCuadros()
     With wdApp.Selection
         .ParagraphFormat.Alignment = wdAlignParagraphLeft
         .Font.Bold = True
-        .TypeText Text:="3.- INFORMACIÓN SOBRE MATERIAS"
+        .TypeText Text:="2.A Itinerario de especialidades formativas del Catálogo de Especialidades Formativas del Sistema Nacional de Empleo"
         .TypeParagraph
         .Font.Bold = False
     End With
@@ -60,8 +60,8 @@ Sub RellenarFormularioYCrearCuadros()
     pos.InsertParagraphAfter
     pos.Collapse Direction:=0 ' wdCollapseEnd
 
-    ' Crear una nueva tabla con 6 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
-    Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=6) ' +1 para la fila del encabezado
+    ' Crear una nueva tabla con 5 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
+    Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=5) ' +1 para la fila del encabezado
     tabla.Borders.Enable = True
 
     ' Insertar encabezados en la primera fila
@@ -71,18 +71,18 @@ Sub RellenarFormularioYCrearCuadros()
         .Cells(3).Range.Text = "Nº Horas"
         .Cells(4).Range.Text = "Modalidad"
         .Cells(5).Range.Text = "Cod. Centro Inscrito Reg.E."
-        .Cells(6).Range.Text = "Columna 6" ' Ajusta según sea necesario
+        
     End With
 
     ' Recorrer cada fila con datos y rellenar la tabla
     For fila = 2 To ultimaFila
         ' Obtener los datos de la fila actual
         codigo = ws.Cells(fila, 1).Value
-        denominacion = ws.Cells(fila, 2).Value
-        horas = ws.Cells(fila, 3).Value
-        modalidad = ws.Cells(fila, 4).Value
-        codCentro = ws.Cells(fila, 5).Value
-        columna6 = ws.Cells(fila, 6).Value ' Ajusta según la columna que desees para la sexta columna
+        denominacion = ws.Cells(fila, 9).Value
+        horas = ws.Cells(fila, 5).Value
+        modalidad = ws.Cells(fila, 7).Value
+        codCentro = ws.Cells(fila, 8).Value
+        
 
         ' Rellenar la tabla con los datos
         With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
@@ -91,7 +91,7 @@ Sub RellenarFormularioYCrearCuadros()
             .Cells(3).Range.Text = horas
             .Cells(4).Range.Text = modalidad
             .Cells(5).Range.Text = codCentro
-            .Cells(6).Range.Text = columna6
+            
         End With
     Next fila
 
@@ -121,7 +121,7 @@ Sub RellenarFormularioYCrearCuadros()
         codigoCentro = ws.Cells(fila, 1).Value
         denominacionCentro = ws.Cells(fila, 9).Value
         tutor = ws.Cells(fila, 6).Value
-        nif = ws.Cells(13, 11).Value
+        nif = ws.Cells(9, 11).Value
 
         ' Insertar una nueva tabla de una celda para el cuadro
         Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=1, NumColumns:=1)
@@ -179,22 +179,22 @@ Sub RellenarFormularioYCrearCuadros()
     ' Insertar encabezados en la primera fila
     With tabla.Rows(1)
         .Cells(1).Range.Text = "Código"
-        .Cells(2).Range.Text = "Denominación"
-        .Cells(3).Range.Text = "Nº Horas"
-        .Cells(4).Range.Text = "Modalidad"
-        .Cells(5).Range.Text = "Cod. Centro Inscrito Reg.E."
-        .Cells(6).Range.Text = "Columna 6" ' Ajusta según sea necesario
+        .Cells(2).Range.Text = "Fecha de inicio"
+        .Cells(3).Range.Text = "Fecha de fin"
+        .Cells(4).Range.Text = "Horas semanales de Actividad formativa"
+        .Cells(5).Range.Text = "Dias de la semana"
+        .Cells(6).Range.Text = "Horario"
     End With
 
     ' Recorrer cada fila con datos y rellenar la tabla
     For fila = 2 To ultimaFila
         ' Obtener los datos de la fila actual
         codigo = ws.Cells(fila, 1).Value
-        denominacion = ws.Cells(fila, 2).Value
-        horas = ws.Cells(fila, 3).Value
-        modalidad = ws.Cells(fila, 4).Value
-        codCentro = ws.Cells(fila, 5).Value
-        columna6 = ws.Cells(fila, 6).Value ' Ajusta según la columna que desees para la sexta columna
+        denominacion = ws.Cells(fila, 9).Value
+        horas = ws.Cells(fila, 5).Value
+        modalidad = ws.Cells(fila, 7).Value
+        codCentro = ws.Cells(fila, 8).Value
+        columna6 = ws.Cells(fila, 6).Value
 
         ' Rellenar la tabla con los datos
         With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
