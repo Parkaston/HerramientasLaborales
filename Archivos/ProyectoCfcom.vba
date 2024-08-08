@@ -47,11 +47,10 @@ Sub RellenarFormularioYCrearCuadros()
 
     ' Insertar el título antes de generar la tabla
     With wdApp.Selection
-        .ParagraphFormat.Alignment = wdAlignParagraphLeft
-        .Font.Bold = True
+        .ParagraphFormat.Alignment = 0 ' wdAlignParagraphLeft
+        .Font.Bold = False
         .TypeText Text:="2.A Itinerario de especialidades formativas del Catálogo de Especialidades Formativas del Sistema Nacional de Empleo"
         .TypeParagraph
-        .Font.Bold = False
     End With
 
     ' Inicializar la posición del cursor después del título
@@ -71,7 +70,6 @@ Sub RellenarFormularioYCrearCuadros()
         .Cells(3).Range.Text = "Nº Horas"
         .Cells(4).Range.Text = "Modalidad"
         .Cells(5).Range.Text = "Cod. Centro Inscrito Reg.E."
-        
     End With
 
     ' Recorrer cada fila con datos y rellenar la tabla
@@ -82,7 +80,6 @@ Sub RellenarFormularioYCrearCuadros()
         horas = ws.Cells(fila, 5).Value
         modalidad = ws.Cells(fila, 7).Value
         codCentro = ws.Cells(fila, 8).Value
-        
 
         ' Rellenar la tabla con los datos
         With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
@@ -91,7 +88,6 @@ Sub RellenarFormularioYCrearCuadros()
             .Cells(3).Range.Text = horas
             .Cells(4).Range.Text = modalidad
             .Cells(5).Range.Text = codCentro
-            
         End With
     Next fila
 
@@ -102,11 +98,10 @@ Sub RellenarFormularioYCrearCuadros()
 
     ' Insertar el título antes de generar los cuadros
     With wdApp.Selection
-        .ParagraphFormat.Alignment = wdAlignParagraphLeft
-        .Font.Bold = True
+        .ParagraphFormat.Alignment = 0 ' wdAlignParagraphLeft
+        .Font.Bold = False
         .TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
         .TypeParagraph
-        .Font.Bold = False
     End With
 
     ' Inicializar la posición del cursor después del título
@@ -140,6 +135,7 @@ Sub RellenarFormularioYCrearCuadros()
                     "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
                     "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
                     "Tutor/a del centro – D./Dña. " & tutor & "                 NIF/NIE  " & nif
+            .Font.Bold = False
         End With
 
         ' Mover el cursor fuera de la tabla y añadir un párrafo después de cada cuadro
@@ -159,11 +155,10 @@ Sub RellenarFormularioYCrearCuadros()
 
     ' Insertar el título antes de generar la tabla
     With wdApp.Selection
-        .ParagraphFormat.Alignment = wdAlignParagraphLeft
-        .Font.Bold = True
+        .ParagraphFormat.Alignment = 0 ' wdAlignParagraphLeft
+        .Font.Bold = False
         .TypeText Text:="Actividad Formativa"
         .TypeParagraph
-        .Font.Bold = False
     End With
 
     ' Inicializar la posición del cursor después del título
@@ -288,3 +283,4 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
+
