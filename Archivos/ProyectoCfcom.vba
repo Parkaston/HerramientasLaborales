@@ -236,6 +236,32 @@ Sub RellenarFormularioYCrearCuadros()
                 cc.Range.Text = ws.Cells(12, 11).Value ' Dato en K12
             Case "TutorCentro"
                 cc.Range.Text = ws.Cells(13, 11).Value ' Dato en K13
+            Case "FechaNacimientoTrabajador"
+                cc.Range.Text = ws.Cells(14, 11).Value ' Dato en K14
+            Case "FechaInicioContrato"
+                cc.Range.Text = ws.Cells(15, 11).Value ' Dato en K15
+            Case "FechaFinContrato"
+                cc.Range.Text = ws.Cells(16, 11).Value ' Dato en K16
+            Case "OcupacionOPuesto"
+                cc.Range.Text = ws.Cells(17, 11).Value ' Dato en K17
+            Case "CNO"
+                cc.Range.Text = ws.Cells(18, 11).Value ' Dato en K18
+            Case "ProvinciaPuesto"
+                cc.Range.Text = ws.Cells(19, 11).Value ' Dato en K19
+            Case "HorasContratoAñoUno"
+                cc.Range.Text = ws.Cells(20, 11).Value ' Dato en K20
+            Case "HorasContratoAñoDos"
+                cc.Range.Text = ws.Cells(21, 11).Value ' Dato en K21
+            Case "HorasItinerario"
+                cc.Range.Text = ws.Cells(22, 11).Value ' Dato en K22
+            Case "DiasLaboral"
+                cc.Range.Text = ws.Cells(23, 11).Value ' Dato en K23
+            Case "HorarioLaboral"
+                cc.Range.Text = ws.Cells(24, 11).Value ' Dato en K24
+            Case "HorarioFormacion"
+                cc.Range.Text = ws.Cells(25, 11).Value ' Dato en K25
+            Case "DireccionCentroTrabajo"
+                cc.Range.Text = ws.Cells(26, 11).Value ' Dato en K26
         End Select
     Next cc
 
