@@ -132,7 +132,7 @@ Sub RellenarFormularioYCrearCuadros()
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
                     "Formación a impartir: Código: " & codigoCentro & " Denominación: " & denominacionCentro & vbCrLf & _
                     ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
-                    ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
+                    ChrW(&H2611) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
                     ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
                     "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
                     "URL (Entidades de teleformación)" & vbCrLf & _
