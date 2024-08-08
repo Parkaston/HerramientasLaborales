@@ -29,6 +29,66 @@ Sub RellenarFormularioYCrearCuadros()
     ' Encontrar la última fila con datos en la primera columna
     ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
 
+    ' ***** PARTE 1: TABLA DE MATERIAS EN LA HOJA 3 *****
+
+    ' Mover el cursor al marcador en la tercera página
+    wdDoc.Bookmarks("TerceraPagina").Select
+
+    ' Insertar el título antes de generar la tabla
+    With wdApp.Selection
+        .ParagraphFormat.Alignment = wdAlignParagraphLeft
+        .Font.Bold = True
+        .TypeText Text:="3.- INFORMACIÓN SOBRE MATERIAS"
+        .TypeParagraph
+        .Font.Bold = False
+    End With
+
+    ' Inicializar la posición del cursor después del título
+    Set pos = wdApp.Selection.Range
+    pos.Collapse Direction:=0 ' wdCollapseEnd
+    pos.InsertParagraphAfter
+    pos.Collapse Direction:=0 ' wdCollapseEnd
+
+    ' Crear una nueva tabla con 6 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
+    Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=6) ' +1 para la fila del encabezado
+    tabla.Borders.Enable = True
+
+    ' Insertar encabezados en la primera fila
+    With tabla.Rows(1)
+        .Cells(1).Range.Text = "Código"
+        .Cells(2).Range.Text = "Denominación"
+        .Cells(3).Range.Text = "Nº Horas"
+        .Cells(4).Range.Text = "Modalidad"
+        .Cells(5).Range.Text = "Cod. Centro Inscrito Reg.E."
+    End With
+
+    ' Recorrer cada fila con datos y rellenar la tabla
+    For fila = 2 To ultimaFila
+        ' Obtener los datos de la fila actual
+        Dim codigo As String
+        Dim denominacion As String
+        Dim horas As String
+        Dim modalidad As String
+        Dim codCentro As String
+
+        codigo = ws.Cells(fila, 1).Value
+        denominacion = ws.Cells(fila, 2).Value
+        horas = ws.Cells(fila, 3).Value
+        modalidad = ws.Cells(fila, 4).Value
+        codCentro = ws.Cells(fila, 5).Value
+
+        ' Rellenar la tabla con los datos
+        With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
+            .Cells(1).Range.Text = codigo
+            .Cells(2).Range.Text = denominacion
+            .Cells(3).Range.Text = horas
+            .Cells(4).Range.Text = modalidad
+            .Cells(5).Range.Text = codCentro
+        End With
+    Next fila
+
+    ' ***** PARTE 2: CUADROS PARA LA HOJA 4 *****
+
     ' Mover el cursor al marcador en la cuarta página
     wdDoc.Bookmarks("CuartaPagina").Select
 
@@ -47,16 +107,16 @@ Sub RellenarFormularioYCrearCuadros()
     pos.InsertParagraphAfter
     pos.Collapse Direction:=0 ' wdCollapseEnd
 
-    ' Recorrer las filas desde la última hasta la primera
-    For fila = ultimaFila To 2 Step -1
+    ' Recorrer cada fila con datos
+    For fila = 2 To ultimaFila
         ' Obtener los datos de la fila actual
-        Dim codigo As String
-        Dim denominacion As String
+        Dim codigoCentro As String
+        Dim denominacionCentro As String
         Dim tutor As String
         Dim nif As String
 
-        codigo = ws.Cells(fila, 1).Value
-        denominacion = ws.Cells(fila, 9).Value
+        codigoCentro = ws.Cells(fila, 1).Value
+        denominacionCentro = ws.Cells(fila, 9).Value
         tutor = ws.Cells(fila, 6).Value
         nif = ws.Cells(13, 11).Value
 
@@ -67,9 +127,9 @@ Sub RellenarFormularioYCrearCuadros()
         ' Insertar el contenido del cuadro en la celda de la tabla con los datos de Excel
         With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-                    "Formación a impartir: Código: " & codigo & " Denominación: " & denominacion & vbCrLf & _
+                    "Formación a impartir: Código: " & codigoCentro & " Denominación: " & denominacionCentro & vbCrLf & _
                     ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
-                    ChrW(&H2714) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
+                    ChrW(&H2610) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
                     ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
                     "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
                     "URL (Entidades de teleformación)" & vbCrLf & _
@@ -110,40 +170,14 @@ Sub RellenarFormularioYCrearCuadros()
                 cc.Range.Text = ws.Cells(8, 11).Value ' Dato en K8
             Case "DniTutor"
                 cc.Range.Text = ws.Cells(9, 11).Value ' Dato en K9
-            Case "HorasSemanales"
+            Case "Horas"
                 cc.Range.Text = ws.Cells(10, 11).Value ' Dato en K10
-            Case "ConvenioAplicable"
+            Case "FechaInicio"
                 cc.Range.Text = ws.Cells(11, 11).Value ' Dato en K11
-            Case "NombreTrabajador"
+            Case "DireccionEmpresa"
                 cc.Range.Text = ws.Cells(12, 11).Value ' Dato en K12
-            Case "DniTrabajador"
+            Case "TutorCentro"
                 cc.Range.Text = ws.Cells(13, 11).Value ' Dato en K13
-            Case "FechaNacimientoTrabajador"
-                cc.Range.Text = ws.Cells(14, 11).Value ' Dato en K14
-            Case "FechaInicioContrato"
-                cc.Range.Text = ws.Cells(15, 11).Value ' Dato en K15
-            Case "FechaFinContrato"
-                cc.Range.Text = ws.Cells(16, 11).Value ' Dato en K16
-            Case "OcupacionOPuesto"
-                cc.Range.Text = ws.Cells(17, 11).Value ' Dato en K17
-            Case "CNO"
-                cc.Range.Text = ws.Cells(18, 11).Value ' Dato en K18
-            Case "ProvinciaPuesto"
-                cc.Range.Text = ws.Cells(19, 11).Value ' Dato en K19
-            Case "HorasContratoAñoUno"
-                cc.Range.Text = ws.Cells(20, 11).Value ' Dato en K20
-            Case "HorasContratoAñoDos"
-                cc.Range.Text = ws.Cells(21, 11).Value ' Dato en K21
-            Case "HorasItinerario"
-                cc.Range.Text = ws.Cells(22, 11).Value ' Dato en K22
-            Case "DiasLaboral"
-                cc.Range.Text = ws.Cells(23, 11).Value ' Dato en K23
-            Case "HorarioLaboral"
-                cc.Range.Text = ws.Cells(24, 11).Value ' Dato en K24
-            Case "HorarioFormacion"
-                cc.Range.Text = ws.Cells(25, 11).Value ' Dato en K25
-            Case "DireccionCentroTrabajo"
-                cc.Range.Text = ws.Cells(26, 11).Value ' Dato en K26
         End Select
     Next cc
 
