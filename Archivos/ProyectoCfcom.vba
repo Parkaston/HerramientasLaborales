@@ -230,11 +230,11 @@ Sub RellenarFormularioYCrearCuadros()
                 cc.Range.Text = ws.Cells(9, 11).Value ' Dato en K9
             Case "Horas"
                 cc.Range.Text = ws.Cells(10, 11).Value ' Dato en K10
-            Case "FechaInicio"
+            Case "Convenio"
                 cc.Range.Text = ws.Cells(11, 11).Value ' Dato en K11
-            Case "DireccionEmpresa"
+            Case "NombreTrabajador"
                 cc.Range.Text = ws.Cells(12, 11).Value ' Dato en K12
-            Case "TutorCentro"
+            Case "DniTrabajador"
                 cc.Range.Text = ws.Cells(13, 11).Value ' Dato en K13
             Case "FechaNacimientoTrabajador"
                 cc.Range.Text = ws.Cells(14, 11).Value ' Dato en K14
