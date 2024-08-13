@@ -16,7 +16,7 @@ Sub RellenarFormularioYCrearCuadros()
     Dim denominacion As String
     Dim horas As String
     Dim modalidad As String
-    Dim codCentro As String
+    Dim codCentro As         String
     Dim columna6 As String
     Dim denominacionCentro As String
     Dim tutor As String
@@ -123,18 +123,18 @@ Sub RellenarFormularioYCrearCuadros()
         tabla.Borders.Enable = True
 
         ' Insertar el contenido del cuadro en la celda de la tabla con los datos de Excel
-        With tabla.Cell(1, 1).Range
+      With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
-                    "Formación a impartir: Código: " & codigoCentro & " Denominación: " & denominacionCentro & vbCrLf & _
-                    ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado:" & vbCrLf & _
-                    ChrW(&H2611) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705" & vbCrLf & _
-                    ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados:" & vbCrLf & vbCrLf & _
-                    "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
-                    "URL (Entidades de teleformación)" & vbCrLf & _
-                    "Dirección: Calle Chiva, 20, B                    CP:        46018                      Municipio: VALENCIA" & vbCrLf & _
-                    "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
-                    "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
-                    "Tutor/a del centro – D./Dña. " & tutor & "                 NIF/NIE  " & nif
+                "Formación a impartir: Código: [CÓDIGO_CENTRO] Denominación: [DENOMINACIÓN_CENTRO]" & vbCrLf & _
+                 ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado: [CÓDIGO_AUTORIZADO]" & vbCrLf & _
+                 ChrW(&H2611) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: [CÓDIGO_REGISTRO_ESTATAL]" & vbCrLf & _
+                 ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados: [CÓDIGOS_CENTROS_PRESENCIALES]" & vbCrLf & vbCrLf & _
+                 "Nombre Centro: [NOMBRE_CENTRO]               CIF/NIF/NIE: [CIF_NIF_NIE]" & vbCrLf & _
+                 "URL (Entidades de teleformación): [URL_ENTIDAD]" & vbCrLf & _
+                 "Dirección: [DIRECCIÓN]                    CP: [CÓDIGO_POSTAL]                      Municipio: [MUNICIPIO]" & vbCrLf & _
+                 "Provincia: [PROVINCIA]       Teléfono: [TELÉFONO]            Correo electrónico: [EMAIL]" & vbCrLf & _
+                 "D./Dña. [NOMBRE_RESPONSABLE]           en concepto de: [CARGO_RESPONSABLE]               NIF/NIE: [NIF_NIE_RESPONSABLE]" & vbCrLf & _
+                 "Tutor/a del centro – D./Dña. [NOMBRE_TUTOR]                 NIF/NIE: [NIF_NIE_TUTOR]"
             .Font.Bold = False
         End With
 
