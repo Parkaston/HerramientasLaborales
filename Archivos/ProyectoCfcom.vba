@@ -16,7 +16,7 @@ Sub RellenarFormularioYCrearCuadros()
     Dim denominacion As String
     Dim horas As String
     Dim modalidad As String
-    Dim codCentro As         String
+    Dim codCentro As String
     Dim columna6 As String
     Dim denominacionCentro As String
     Dim tutor As String
@@ -35,7 +35,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Crear una instancia de Word y abrir el documento para rellenar el formulario
     Set wdApp = CreateObject("Word.Application")
     wdApp.Visible = True ' Opcional, para ver Word mientras se ejecuta el script
-    Set wdDoc = wdApp.Documents.Open("C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
+    Set wdDoc = wdApp.Documents.Open("C:\Users\Guille\Desktop\Pruebas pdf2\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
 
     ' Encontrar la última fila con datos en la primera columna
     ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
@@ -60,36 +60,43 @@ Sub RellenarFormularioYCrearCuadros()
     pos.Collapse Direction:=0 ' wdCollapseEnd
 
     ' Crear una nueva tabla con 5 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
-    Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=5) ' +1 para la fila del encabezado
-    tabla.Borders.Enable = True
+Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=5) ' +1 para la fila del encabezado
+tabla.Borders.Enable = True
 
-    ' Insertar encabezados en la primera fila
-    With tabla.Rows(1)
-        .Cells(1).Range.Text = "Código"
-        .Cells(2).Range.Text = "Denominación"
-        .Cells(3).Range.Text = "Nº Horas"
-        .Cells(4).Range.Text = "Modalidad"
-        .Cells(5).Range.Text = "Cod. Centro Inscrito Reg.E."
+' Aplicar formato a la tabla
+FormatearTabla tabla
+
+' Insertar encabezados en la primera fila
+With tabla.Rows(1)
+    .Cells(1).Range.Text = "Código"
+    .Cells(2).Range.Text = "Denominación"
+    .Cells(3).Range.Text = "Nº Horas"
+    .Cells(4).Range.Text = "Modalidad"
+    .Cells(5).Range.Text = "Cod. Centro Inscrito Reg.E."
+    ' Asegurarse de que los encabezados no estén en negrita
+    .Range.Font.Bold = False
+End With
+
+' Recorrer cada fila con datos y rellenar la tabla
+For fila = 2 To ultimaFila
+    ' Obtener los datos de la fila actual
+    codigo = ws.Cells(fila, 1).Value
+    denominacion = ws.Cells(fila, 9).Value
+    horas = ws.Cells(fila, 5).Value
+    modalidad = ws.Cells(fila, 7).Value
+    codCentro = ws.Cells(fila, 8).Value
+
+    ' Rellenar la tabla con los datos
+    With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
+        .Cells(1).Range.Text = codigo
+        .Cells(2).Range.Text = denominacion
+        .Cells(3).Range.Text = horas
+        .Cells(4).Range.Text = modalidad
+        .Cells(5).Range.Text = codCentro
+        ' Asegurarse de que las celdas no estén en negrita
+        .Range.Font.Bold = False
     End With
-
-    ' Recorrer cada fila con datos y rellenar la tabla
-    For fila = 2 To ultimaFila
-        ' Obtener los datos de la fila actual
-        codigo = ws.Cells(fila, 1).Value
-        denominacion = ws.Cells(fila, 9).Value
-        horas = ws.Cells(fila, 5).Value
-        modalidad = ws.Cells(fila, 7).Value
-        codCentro = ws.Cells(fila, 8).Value
-
-        ' Rellenar la tabla con los datos
-        With tabla.Rows(fila - 1 + 1) ' -1 porque la primera fila es el encabezado, +1 porque la primera fila de datos es la fila 2
-            .Cells(1).Range.Text = codigo
-            .Cells(2).Range.Text = denominacion
-            .Cells(3).Range.Text = horas
-            .Cells(4).Range.Text = modalidad
-            .Cells(5).Range.Text = codCentro
-        End With
-    Next fila
+Next fila
 
     ' ***** PARTE 2: CUADROS PARA LA HOJA 4 *****
 
@@ -122,8 +129,11 @@ Sub RellenarFormularioYCrearCuadros()
         Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=1, NumColumns:=1)
         tabla.Borders.Enable = True
 
+        ' Aplicar formato a la tabla
+        FormatearTabla tabla
+
         ' Insertar el contenido del cuadro en la celda de la tabla con los datos de Excel
-      With tabla.Cell(1, 1).Range
+        With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
                 "Formación a impartir: Código: [CÓDIGO_CENTRO] Denominación: [DENOMINACIÓN_CENTRO]" & vbCrLf & _
                  ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado: [CÓDIGO_AUTORIZADO]" & vbCrLf & _
@@ -170,6 +180,9 @@ Sub RellenarFormularioYCrearCuadros()
     ' Crear una nueva tabla con 6 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
     Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=6) ' +1 para la fila del encabezado
     tabla.Borders.Enable = True
+
+    ' Aplicar formato a la tabla
+    FormatearTabla tabla
 
     ' Insertar encabezados en la primera fila
     With tabla.Rows(1)
@@ -268,7 +281,7 @@ Sub RellenarFormularioYCrearCuadros()
         MsgBox "No se ingresó un nombre de archivo. El archivo no se guardará.", vbExclamation
     Else
         ' Definir la ruta completa para guardar el archivo
-        rutaArchivo = "C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Archivos de salida\" & nombreArchivo & ".docx"
+        rutaArchivo = "C:\Users\Guille\Desktop\Pruebas pdf2\Archivos\Archivos de salida\" & nombreArchivo & ".docx"
         
         ' Guardar el documento con el nombre proporcionado por el usuario
         wdDoc.SaveAs rutaArchivo
@@ -284,3 +297,17 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdApp = Nothing
 End Sub
 
+Sub FormatearTabla(tabla As Object)
+    With tabla
+        ' Alinear el texto en las celdas al centro
+        .Range.ParagraphFormat.Alignment = 1 ' wdAlignParagraphCenter
+        ' Aplicar un borde fino
+        .Borders.OutsideLineStyle = 1 ' wdLineStyleSingle
+        .Borders.InsideLineStyle = 1 ' wdLineStyleSingle
+        ' Ajustar márgenes de celda
+        .TopPadding = 5
+        .BottomPadding = 5
+        .LeftPadding = 5
+        .RightPadding = 5
+    End With
+End Sub
