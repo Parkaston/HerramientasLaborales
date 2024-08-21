@@ -48,7 +48,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Insertar el título antes de generar la tabla
     With wdApp.Selection
         .ParagraphFormat.Alignment = 0 ' wdAlignParagraphLeft
-        .Font.Bold = False
+        .Font.Bold = True
         .TypeText Text:="2.A Itinerario de especialidades formativas del Catálogo de Especialidades Formativas del Sistema Nacional de Empleo"
         .TypeParagraph
     End With
@@ -62,6 +62,8 @@ Sub RellenarFormularioYCrearCuadros()
     ' Crear una nueva tabla con 5 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
     Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=5) ' +1 para la fila del encabezado
     tabla.Borders.Enable = True
+    ' Cambiar el tamaño de fuente de toda la tabla a 10 puntos
+    tabla.Range.Font.Size = 9
 
     ' Insertar encabezados en la primera fila
     With tabla.Rows(1)
@@ -103,7 +105,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Insertar el título antes de generar los cuadros
     With wdApp.Selection
         .ParagraphFormat.Alignment = 0 ' wdAlignParagraphLeft
-        .Font.Bold = False
+        .Font.Bold = True
         .TypeText Text:="4.- CENTROS IMPARTIDORES DE LA ACTIVIDAD FORMATIVA"
         .TypeParagraph
     End With
@@ -125,10 +127,10 @@ Sub RellenarFormularioYCrearCuadros()
         ' Insertar una nueva tabla de una celda para el cuadro
         Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=1, NumColumns:=1)
         tabla.Borders.Enable = True
-
+        tabla.Range.Font.Size = 9
         ' Insertar el contenido del cuadro en la celda de la tabla con los datos de Excel
       With tabla.Cell(1, 1).Range
-            .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & _
+            .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & vbCrLf & _
                 "Formación a impartir: Código: [CÓDIGO_CENTRO] Denominación: [DENOMINACIÓN_CENTRO]" & vbCrLf & _
                  ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado: [CÓDIGO_AUTORIZADO]" & vbCrLf & _
                  ChrW(&H2611) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: [CÓDIGO_REGISTRO_ESTATAL]" & vbCrLf & _
@@ -138,7 +140,7 @@ Sub RellenarFormularioYCrearCuadros()
                  "Dirección: [DIRECCIÓN]                    CP: [CÓDIGO_POSTAL]                      Municipio: [MUNICIPIO]" & vbCrLf & _
                  "Provincia: [PROVINCIA]       Teléfono: [TELÉFONO]            Correo electrónico: [EMAIL]" & vbCrLf & _
                  "D./Dña. [NOMBRE_RESPONSABLE]           en concepto de: [CARGO_RESPONSABLE]               NIF/NIE: [NIF_NIE_RESPONSABLE]" & vbCrLf & _
-                 "Tutor/a del centro – D./Dña. [NOMBRE_TUTOR]                 NIF/NIE: [NIF_NIE_TUTOR]"
+                 "Tutor/a del centro – D./Dña. [NOMBRE_TUTOR]                 NIF/NIE: [NIF_NIE_TUTOR]" & vbCrLf
             .Font.Bold = False
         End With
 
@@ -146,8 +148,8 @@ Sub RellenarFormularioYCrearCuadros()
         pos.Collapse Direction:=0 ' wdCollapseEnd
         pos.InsertParagraphAfter
         pos.Collapse Direction:=0 ' wdCollapseEnd
-
         ' Añadir un salto de párrafo para separar cada cuadro
+        pos.InsertBreak Type:=7 ' wdPageBreak
         pos.InsertBreak Type:=7 ' wdPageBreak
         pos.Collapse Direction:=0 ' wdCollapseEnd
     Next fila
@@ -160,7 +162,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Insertar el título antes de generar la tabla
     With wdApp.Selection
         .ParagraphFormat.Alignment = 0 ' wdAlignParagraphLeft
-        .Font.Bold = False
+        .Font.Bold = True
         .TypeText Text:="Actividad Formativa"
         .TypeParagraph
     End With
@@ -174,7 +176,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Crear una nueva tabla con 6 columnas y (ultimaFila - 1) filas (porque la primera fila de datos es la fila 2)
     Set tabla = wdDoc.Tables.Add(Range:=pos, NumRows:=ultimaFila - 1 + 1, NumColumns:=6) ' +1 para la fila del encabezado
     tabla.Borders.Enable = True
-
+    tabla.Range.Font.Size = 9
     ' Insertar encabezados en la primera fila
     With tabla.Rows(1)
         .Cells(1).Range.Text = "Código"
@@ -183,6 +185,7 @@ Sub RellenarFormularioYCrearCuadros()
         .Cells(4).Range.Text = "Horas semanales de Actividad formativa"
         .Cells(5).Range.Text = "Dias de la semana"
         .Cells(6).Range.Text = "Horario"
+        .Range.Font.Bold = False
     End With
 
     ' Recorrer cada fila con datos y rellenar la tabla
@@ -203,6 +206,7 @@ Sub RellenarFormularioYCrearCuadros()
             .Cells(4).Range.Text = modalidad
             .Cells(5).Range.Text = codCentro
             .Cells(6).Range.Text = columna6
+            .Range.Font.Bold = False
         End With
     Next fila
 
@@ -287,3 +291,4 @@ Sub RellenarFormularioYCrearCuadros()
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
+
