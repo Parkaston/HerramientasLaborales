@@ -35,7 +35,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Crear una instancia de Word y abrir el documento para rellenar el formulario
     Set wdApp = CreateObject("Word.Application")
     wdApp.Visible = True ' Opcional, para ver Word mientras se ejecuta el script
-    Set wdDoc = wdApp.Documents.Open("C:\Users\Guille\Desktop\Pruebas pdf2\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
+    Set wdDoc = wdApp.Documents.Open("C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
 
     ' Encontrar la última fila con datos en la primera columna
     ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
@@ -272,7 +272,7 @@ Sub RellenarFormularioYCrearCuadros()
         MsgBox "No se ingresó un nombre de archivo. El archivo no se guardará.", vbExclamation
     Else
         ' Definir la ruta completa para guardar el archivo
-        rutaArchivo = "C:\Users\Guille\Desktop\Pruebas pdf2\Archivos\Archivos de salida\" & nombreArchivo & ".docx"
+        rutaArchivo = "C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Archivos de salida\" & nombreArchivo & ".docx"
         
         ' Guardar el documento con el nombre proporcionado por el usuario
         wdDoc.SaveAs rutaArchivo
