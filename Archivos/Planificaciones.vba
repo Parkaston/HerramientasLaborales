@@ -6,8 +6,10 @@ Sub InsertarDatosDesdeExcelEnWord()
     Dim tbl As Object
     Dim xlSheet As Worksheet
     Dim i As Integer, lastRow As Integer
-    Dim codigo As String, denominacion As String, fechaInicio As String, fechaFin As String
+    Dim codigo As String, denominacion As String, fechaInicio As String, fechaFin As String, horas As String
     Dim nombreArchivo As String
+    Dim sumaMaterias As String
+    Dim cc As Object
     
     ' Ruta fija del archivo Word
     Dim pathWord As String
@@ -35,6 +37,9 @@ Sub InsertarDatosDesdeExcelEnWord()
     ' Seleccionar la tabla en Word (asume que es la primera tabla)
     Set tbl = wdDoc.Tables(1)
 
+    ' Inicializar la cadena para concatenar los códigos de las materias
+    sumaMaterias = ""
+
     ' Obtener la última fila con datos en Excel
     lastRow = xlSheet.Cells(xlSheet.Rows.Count, "A").End(xlUp).Row
 
@@ -45,6 +50,14 @@ Sub InsertarDatosDesdeExcelEnWord()
         fechaInicio = xlSheet.Cells(i, 3).Value
         fechaFin = xlSheet.Cells(i, 4).Value
         horas = xlSheet.Cells(i, 5).Value
+        
+        ' Concatenar el código de la materia a la cadena de sumaMaterias
+        If sumaMaterias = "" Then
+            sumaMaterias = codigo
+        Else
+            sumaMaterias = sumaMaterias & "+" & codigo
+        End If
+        
         ' Añadir una nueva fila a la tabla en Word
         With tbl.Rows.Add
             .Cells(1).Range.Text = codigo
@@ -55,16 +68,17 @@ Sub InsertarDatosDesdeExcelEnWord()
         End With
     Next i
 
+    ' Reemplazar los valores en los controles de contenido
     For Each cc In wdDoc.ContentControls
         Select Case cc.Title
             Case "NombreAlumno"
                 cc.Range.Text = xlSheet.Cells(12, 11).Value ' Dato en K12
+            Case "DniAlumno"
                 cc.Range.Text = xlSheet.Cells(13, 11).Value ' Dato en K13
+            Case "SumaDeMaterias"
+                cc.Range.Text = sumaMaterias ' Asignar la cadena concatenada a SumaDeMaterias
         End Select
     Next cc
-                
-                
-                
                 
     ' Solicitar al usuario el nombre del archivo para guardar
     nombreArchivo = InputBox("Ingrese el nombre con el que desea guardar el archivo Word:", "Guardar como")
