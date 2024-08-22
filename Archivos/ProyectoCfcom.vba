@@ -35,7 +35,7 @@ Sub RellenarFormularioYCrearCuadros()
     ' Crear una instancia de Word y abrir el documento para rellenar el formulario
     Set wdApp = CreateObject("Word.Application")
     wdApp.Visible = True ' Opcional, para ver Word mientras se ejecuta el script
-    Set wdDoc = wdApp.Documents.Open("C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
+    Set wdDoc = wdApp.Documents.Open("C:\Users\DepartamentoAdminist\Desktop\ANEXOS I MODELOS\Archivos\Formulariollenar.docx")  ' Ruta del archivo que queremos modificar
 
     ' Encontrar la última fila con datos en la primera columna
     ultimaFila = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
@@ -131,16 +131,16 @@ Sub RellenarFormularioYCrearCuadros()
         ' Insertar el contenido del cuadro en la celda de la tabla con los datos de Excel
       With tabla.Cell(1, 1).Range
             .Text = "DATOS DEL CENTRO DE FORMACIÓN" & vbCrLf & vbCrLf & _
-                "Formación a impartir: Código: [CÓDIGO_CENTRO] Denominación: [DENOMINACIÓN_CENTRO]" & vbCrLf & _
-                 ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado: [CÓDIGO_AUTORIZADO]" & vbCrLf & _
-                 ChrW(&H2611) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: [CÓDIGO_REGISTRO_ESTATAL]" & vbCrLf & _
-                 ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados: [CÓDIGOS_CENTROS_PRESENCIALES]" & vbCrLf & vbCrLf & _
-                 "Nombre Centro: [NOMBRE_CENTRO]               CIF/NIF/NIE: [CIF_NIF_NIE]" & vbCrLf & _
-                 "URL (Entidades de teleformación): [URL_ENTIDAD]" & vbCrLf & _
-                 "Dirección: [DIRECCIÓN]                    CP: [CÓDIGO_POSTAL]                      Municipio: [MUNICIPIO]" & vbCrLf & _
-                 "Provincia: [PROVINCIA]       Teléfono: [TELÉFONO]            Correo electrónico: [EMAIL]" & vbCrLf & _
-                 "D./Dña. [NOMBRE_RESPONSABLE]           en concepto de: [CARGO_RESPONSABLE]               NIF/NIE: [NIF_NIE_RESPONSABLE]" & vbCrLf & _
-                 "Tutor/a del centro – D./Dña. [NOMBRE_TUTOR]                 NIF/NIE: [NIF_NIE_TUTOR]" & vbCrLf
+                "Formación a impartir: Código: " & codigoCentro & " Denominación: " & denominacionCentro & vbCrLf & _
+                 ChrW(&H2610) & " Centro Sistema Educativo. Código de centro autorizado: " & vbCrLf & _
+                 ChrW(&H2611) & " Centro Acreditado. Código de centro en Registro Estatal de centros de formación: 8000000705 " & vbCrLf & _
+                 ChrW(&H2610) & " Si la formación se imparte mediante teleformación, en su caso, especificar código/s del/os Centros Presenciales vinculados: " & vbCrLf & vbCrLf & _
+                 "Nombre Centro: Grupo CFCOM 2.0, S.L.              CIF/NIF/NIE: B98551401" & vbCrLf & _
+                 "URL (Entidades de teleformación): " & vbCrLf & _
+                 "Dirección: Calle Chiva, 20, B                    CP:        46018                      Municipio: VALENCIA" & vbCrLf & _
+                 "Provincia:   VALENCIA       Teléfono         962067573            Correo electrónico INFO@CONTRATO-FORMACION.COM" & vbCrLf & _
+                 "D./Dña. JOSE VICENTE ROIG           en concepto de                GERENTE               NIF/NIE         44869822L" & vbCrLf & _
+                  "Tutor/a del centro – D./Dña. " & tutor & "                 NIF/NIE  " & nif
             .Font.Bold = False
         End With
 
@@ -276,19 +276,17 @@ Sub RellenarFormularioYCrearCuadros()
         MsgBox "No se ingresó un nombre de archivo. El archivo no se guardará.", vbExclamation
     Else
         ' Definir la ruta completa para guardar el archivo
-        rutaArchivo = "C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Archivos de salida\" & nombreArchivo & ".docx"
+        rutaArchivo = "C:\Users\DepartamentoAdminist\Desktop\ANEXOS I MODELOS\Archivos\Archivos de salida\" & nombreArchivo & ".docx"
         
         ' Guardar el documento con el nombre proporcionado por el usuario
         wdDoc.SaveAs rutaArchivo
         MsgBox "Archivo guardado en: " & rutaArchivo, vbInformation
     End If
 
-    ' Cerrar el documento y Word
-    wdDoc.Close False
-    wdApp.Quit
 
     ' Liberar objetos
     Set wdDoc = Nothing
     Set wdApp = Nothing
 End Sub
+
 
