@@ -14,6 +14,7 @@ Sub ActualizarPlanFormativo()
     Dim i As Long
     Dim cc As Object
     Dim rng As Object
+    Dim nuevaSeccion As Object
 
     ' Configurar hoja de cálculo y aplicación de Word
     Set ws = ThisWorkbook.Sheets("CALCULO") '
@@ -65,12 +66,14 @@ Sub ActualizarPlanFormativo()
             wordDoc.Content.Copy
             rng.Paste
 
-            ' Reemplazar el contenido del control de contenido "FechaInicio" y "FechaFin" en el documento base
+            ' Reemplazar el contenido del control de contenido "FechaInicio" y "FechaFin" en la sección recién pegada
             For Each cc In plantillaDoc.ContentControls
-                If cc.Title = "FechaInicio" Then
-                    cc.Range.Text = fechaInicio
-                ElseIf cc.Title = "FechaFin" Then
-                    cc.Range.Text = fechaFin
+                If cc.Range.InRange(rng) Then ' Asegurarse de que el control de contenido esté en la sección recién pegada
+                    If cc.Title = "FechaInicio" Then
+                        cc.Range.Text = fechaInicio
+                    ElseIf cc.Title = "FechaFin" Then
+                        cc.Range.Text = fechaFin
+                    End If
                 End If
             Next cc
 
