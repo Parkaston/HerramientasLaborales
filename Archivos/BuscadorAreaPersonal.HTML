@@ -11,7 +11,7 @@
 <h2>Plantillas</h2>
 
 <!-- Campo de búsqueda -->
-<input type="text" id="buscador" placeholder="Buscar cursos..." style="margin-bottom: 10px; padding: 5px; width: 100%;" onkeyup="buscar()">
+<input type="text" id="buscador" placeholder="Buscar cursos..." style="margin-bottom: 10px; padding: 5px; width: 100%;" onkeyup="buscar()" data-initial-value="">
 
 <!-- Categoría Rocío -->
 <button class="accordion" style="background-color: #f1f1f1; color: #333; cursor: pointer; padding: 10px; width: 100%; border: 1px solid #ddd; text-align: left; outline: none; transition: background-color 0.2s ease; margin-top: 5px;">
@@ -186,19 +186,31 @@
         const panels = document.querySelectorAll('.panel');
 
         panels.forEach(panel => {
-            const text = panel.textContent.toLowerCase();
-            const button = panel.previousElementSibling;
+            const items = panel.querySelectorAll('p, a'); // Selecciona los párrafos y enlaces dentro del panel
+            let hasVisibleItems = false; // Variable para rastrear si hay elementos visibles
 
-            // Mostrar u ocultar paneles según el texto de búsqueda
-            if (text.includes(input)) {
-                panel.style.display = 'block'; // Muestra el contenido que coincide
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+
+                // Mostrar u ocultar elementos según el texto de búsqueda
+                if (text.includes(input)) {
+                    item.style.display = ''; // Muestra el contenido que coincide
+                    hasVisibleItems = true; // Marca que al menos un elemento coincide
+                } else {
+                    item.style.display = 'none'; // Oculta el contenido que no coincide
+                }
+            });
+
+            // Mostrar u ocultar el panel según si tiene elementos visibles
+            const button = panel.previousElementSibling;
+            if (hasVisibleItems) {
+                panel.style.display = panel.classList.contains('course-panel') ? 'grid' : 'block'; // Mantener el grid si es un course-panel
                 button.style.display = 'block'; // Muestra el botón asociado
             } else {
-                panel.style.display = 'none'; // Oculta el contenido que no coincide
+                panel.style.display = 'none'; // Oculta el panel si no tiene elementos visibles
                 button.style.display = 'none'; // Oculta el botón asociado
             }
         });
     }
 </script>
-
 <p></p>
