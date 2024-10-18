@@ -152,11 +152,37 @@ Else
     Exit Sub
 End If
 
+' Insertar contenido en el marcador "ItinerarioConHoras"
+On Error Resume Next
+Set marcadorItinerario = wordDoc.Bookmarks("ItinerarioConHoras").Range
+On Error GoTo 0
+
+If Not marcadorItinerario Is Nothing Then
+    ' Limpiar el contenido actual del marcador antes de insertar
+    marcadorItinerario.Text = ""
+
+    ' Iterar sobre cada fila para obtener el código, nombre y horas del curso
+    For currentRow = 2 To lastRow ' Comienza en la fila 2 para evitar los títulos
+        codigo = ws.Cells(currentRow, 1).Value
+        nombre = ws.Cells(currentRow, 2).Value
+        horas = ws.Cells(currentRow, 5).Value ' Quinta columna para la cantidad de horas
+
+        ' Saltar filas vacías
+        If codigo <> "" And nombre <> "" And horas <> "" Then
+            ' Insertar el texto formateado en el marcador "ItinerarioConHoras"
+            marcadorItinerario.InsertAfter codigo & ": " & nombre & " (" & horas & " horas)" & vbCrLf
+        End If
+    Next currentRow
+Else
+    MsgBox "El marcador 'ItinerarioConHoras' no se encontró en el documento."
+    wordDoc.Close False
+    wordApp.Quit
+    Exit Sub
+End If
 
 
-
-    ' Pedirle al usuario un nombre para el archivo con un emoji en el mensaje
-    nombreArchivo = InputBox("Ingrese el nombre del archivo (sin extensión): ??")
+    ' Pedirle al usuario un nombre para el archivo
+    nombreArchivo = InputBox("Ingrese el nombre del archivo (sin extensión): ")
 
     ' Crear la carpeta "Archivos de salida" si no existe
     rutaCarpeta = rutaArchivoExcel & "\Archivos de salida"
