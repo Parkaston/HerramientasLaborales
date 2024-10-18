@@ -14,6 +14,8 @@ Sub RellenarPlantillaWordConMarcador()
     Dim marcador As Object
     Dim savePath As String
     Dim plantillaPath As String
+    Dim tabla As Object
+    Dim filaTabla As Integer
 
     ' Establecer la hoja de trabajo "CALCULO" y la hoja "Objetivos"
     Set ws = ThisWorkbook.Sheets("CALCULO")
@@ -47,13 +49,15 @@ Sub RellenarPlantillaWordConMarcador()
     ' Llamar a la función para reemplazar controles de contenido por datos
     Call ReemplazarControlesContenido(wordDoc, ws)
 
-    ' Insertar código, nombre de curso y objetivos generales en el marcador "ItinerarioFormativo"
+    ' Insertar el código, nombre del curso y objetivos generales en la tabla del marcador "UnidadesCompetencia"
     On Error Resume Next
-    Set marcador = wordDoc.Bookmarks("ItinerarioFormativo").Range
+    Set marcador = wordDoc.Bookmarks("UnidadesCompetencia").Range
     On Error GoTo 0
 
-    ' Verificar si el marcador existe
     If Not marcador Is Nothing Then
+        ' Obtener la tabla después del marcador
+        Set tabla = marcador.Tables(1)
+        
         ' Iterar sobre cada fila para obtener el código, nombre y objetivos del curso (empezando en la fila 2)
         For currentRow = 2 To lastRow ' Comienza en la fila 2 para evitar los títulos
             codigo = ws.Cells(currentRow, 1).Value
@@ -62,13 +66,22 @@ Sub RellenarPlantillaWordConMarcador()
 
             ' Saltar filas vacías
             If codigo <> "" And nombre <> "" Then
-                ' Escribir el código, nombre y objetivos en el marcador
-                marcador.InsertAfter vbCrLf & codigo & " - " & nombre & vbCrLf & "Objetivos: " & objetivos
-                marcador.Collapse Direction:=0 ' wdCollapseEnd
+                ' Añadir una nueva fila a la tabla
+                filaTabla = tabla.Rows.Count
+                tabla.Rows.Add ' Agrega una fila nueva
+
+                ' Escribir el código y nombre del curso en la primera columna de la nueva fila
+                tabla.Cell(filaTabla + 1, 1).Range.Text = codigo & " - " & nombre
+
+                ' Escribir los objetivos en la segunda columna de la nueva fila
+                 With tabla.Cell(filaTabla + 1, 2).Range
+                    .Text = objetivos
+                    .Font.Bold = False ' Desactivar negrita
+                End With
             End If
         Next currentRow
     Else
-        MsgBox "El marcador 'ItinerarioFormativo' no se encontró en el documento."
+        MsgBox "El marcador 'UnidadesCompetencia' no se encontró en el documento."
         wordDoc.Close False
         wordApp.Quit
         Exit Sub
