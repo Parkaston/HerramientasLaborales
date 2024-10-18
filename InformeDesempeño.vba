@@ -1,9 +1,11 @@
 Sub RellenarPlantillaWordConMarcador()
     Dim ws As Worksheet
+    Dim wsObjetivos As Worksheet
     Dim lastRow As Long
     Dim currentRow As Long
     Dim codigo As String
     Dim nombre As String
+    Dim objetivos As String
     Dim rutaArchivoExcel As String
     Dim rutaCarpeta As String
     Dim nombreArchivo As String
@@ -13,8 +15,9 @@ Sub RellenarPlantillaWordConMarcador()
     Dim savePath As String
     Dim plantillaPath As String
 
-    ' Establecer la hoja de trabajo "CALCULO"
+    ' Establecer la hoja de trabajo "CALCULO" y la hoja "Objetivos"
     Set ws = ThisWorkbook.Sheets("CALCULO")
+    Set wsObjetivos = ThisWorkbook.Sheets("Objetivos") ' Hoja donde guardas los objetivos
 
     ' Encontrar la última fila con datos en la columna A (Código de curso)
     lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
@@ -44,22 +47,23 @@ Sub RellenarPlantillaWordConMarcador()
     ' Llamar a la función para reemplazar controles de contenido por datos
     Call ReemplazarControlesContenido(wordDoc, ws)
 
-    ' Insertar código y nombre de curso en el marcador "ItinerarioFormativo"
+    ' Insertar código, nombre de curso y objetivos generales en el marcador "ItinerarioFormativo"
     On Error Resume Next
     Set marcador = wordDoc.Bookmarks("ItinerarioFormativo").Range
     On Error GoTo 0
 
     ' Verificar si el marcador existe
     If Not marcador Is Nothing Then
-        ' Iterar sobre cada fila para obtener el código y nombre del curso (empezando en la fila 2)
+        ' Iterar sobre cada fila para obtener el código, nombre y objetivos del curso (empezando en la fila 2)
         For currentRow = 2 To lastRow ' Comienza en la fila 2 para evitar los títulos
             codigo = ws.Cells(currentRow, 1).Value
             nombre = ws.Cells(currentRow, 2).Value
+            objetivos = ObtenerObjetivosGenerales(codigo, wsObjetivos)
 
             ' Saltar filas vacías
             If codigo <> "" And nombre <> "" Then
-                ' Escribir el código y nombre en el marcador
-                marcador.InsertAfter vbCrLf & codigo & " - " & nombre
+                ' Escribir el código, nombre y objetivos en el marcador
+                marcador.InsertAfter vbCrLf & codigo & " - " & nombre & vbCrLf & "Objetivos: " & objetivos
                 marcador.Collapse Direction:=0 ' wdCollapseEnd
             End If
         Next currentRow
@@ -71,7 +75,7 @@ Sub RellenarPlantillaWordConMarcador()
     End If
 
     ' Pedirle al usuario un nombre para el archivo con un emoji en el mensaje
-    nombreArchivo = InputBox("Ingrese el nombre del archivo (sin extensión): 😁")
+    nombreArchivo = InputBox("Ingrese el nombre del archivo (sin extensión): ??")
 
     ' Crear la carpeta "Archivos de salida" si no existe
     rutaCarpeta = rutaArchivoExcel & "\Archivos de salida"
@@ -132,3 +136,28 @@ Sub ReemplazarControlesContenido(doc As Object, ws As Worksheet)
         End If
     Next cc
 End Sub
+
+' Función para obtener los objetivos generales según el código del curso
+Function ObtenerObjetivosGenerales(codigoCurso As String, wsObjetivos As Worksheet) As String
+    Dim lastRowObjetivos As Long
+    Dim currentRowObjetivos As Long
+    Dim codigoObjetivo As String
+    Dim objetivos As String
+
+    ' Encontrar la última fila con datos en la hoja "Objetivos"
+    lastRowObjetivos = wsObjetivos.Cells(wsObjetivos.Rows.Count, 1).End(xlUp).Row
+
+    ' Iterar sobre la hoja de objetivos para encontrar el código y devolver los objetivos
+    For currentRowObjetivos = 2 To lastRowObjetivos ' Asume que los datos empiezan en la fila 2
+        codigoObjetivo = wsObjetivos.Cells(currentRowObjetivos, 1).Value ' Código de la materia en la columna A
+        If codigoObjetivo = codigoCurso Then
+            ' Objetivos generales en la columna B
+            objetivos = wsObjetivos.Cells(currentRowObjetivos, 2).Value
+            ObtenerObjetivosGenerales = objetivos
+            Exit Function
+        End If
+    Next currentRowObjetivos
+
+    ' Si no encuentra los objetivos, devuelve un mensaje de error
+    ObtenerObjetivosGenerales = "No se encontraron objetivos para este curso"
+End Function
