@@ -12,10 +12,13 @@ Sub RellenarPlantillaWordConMarcador()
     Dim wordApp As Object
     Dim wordDoc As Object
     Dim marcador As Object
+    Dim marcadorConseguido As Object
     Dim savePath As String
     Dim plantillaPath As String
     Dim tabla As Object
+    Dim tablaConseguido As Object
     Dim filaTabla As Integer
+    Dim filaTablaConseguido As Integer
 
     ' Establecer la hoja de trabajo "CALCULO" y la hoja "Objetivos"
     Set ws = ThisWorkbook.Sheets("CALCULO")
@@ -49,7 +52,7 @@ Sub RellenarPlantillaWordConMarcador()
     ' Llamar a la función para reemplazar controles de contenido por datos
     Call ReemplazarControlesContenido(wordDoc, ws)
 
-    ' Insertar el código, nombre del curso y objetivos generales en la tabla del marcador "UnidadesCompetencia"
+    ' Tabla en el marcador "UnidadesCompetencia"
     On Error Resume Next
     Set marcador = wordDoc.Bookmarks("UnidadesCompetencia").Range
     On Error GoTo 0
@@ -73,8 +76,8 @@ Sub RellenarPlantillaWordConMarcador()
                 ' Escribir el código y nombre del curso en la primera columna de la nueva fila
                 tabla.Cell(filaTabla + 1, 1).Range.Text = codigo & " - " & nombre
 
-                ' Escribir los objetivos en la segunda columna de la nueva fila
-                 With tabla.Cell(filaTabla + 1, 2).Range
+                ' Escribir los objetivos en la segunda columna de la nueva fila y deshabilitar negrita
+                With tabla.Cell(filaTabla + 1, 2).Range
                     .Text = objetivos
                     .Font.Bold = False ' Desactivar negrita
                 End With
@@ -86,6 +89,71 @@ Sub RellenarPlantillaWordConMarcador()
         wordApp.Quit
         Exit Sub
     End If
+    
+' Tabla en el marcador "UnidadesCompetenciaConseguido"
+On Error Resume Next
+Set marcadorConseguido = wordDoc.Bookmarks("UnidadesCompetenciaConseguido").Range
+On Error GoTo 0
+
+' Verificar si el marcador existe y contiene una tabla
+If Not marcadorConseguido Is Nothing Then
+    ' Asegurarse de que hay una tabla en el marcador
+    If marcadorConseguido.Tables.Count > 0 Then
+        Set tablaConseguido = marcadorConseguido.Tables(1)
+
+        ' Iterar sobre cada fila para obtener el código, nombre y objetivos del curso
+        For currentRow = 2 To lastRow ' Comienza en la fila 2 para evitar los títulos
+            codigo = ws.Cells(currentRow, 1).Value
+            nombre = ws.Cells(currentRow, 2).Value
+            objetivos = ObtenerObjetivosGenerales(codigo, wsObjetivos)
+
+            ' Saltar filas vacías
+            If codigo <> "" And nombre <> "" Then
+                ' Añadir una nueva fila a la tabla
+                tablaConseguido.Rows.Add ' Agrega una fila nueva
+                filaTablaConseguido = tablaConseguido.Rows.Count ' Contar las filas para obtener la última agregada
+
+                ' Insertar el contenido en la fila recién añadida usando InsertAfter y formato visible
+                ' Primera columna: Código y Nombre del curso
+                With tablaConseguido.Cell(filaTablaConseguido, 1).Range
+                    .Text = codigo & " - " & nombre
+                    .Font.Color = wdColorBlack ' Asegurar que el texto sea visible (negro)
+                    .Font.Size = 11 ' Tamaño de fuente estándar
+                End With
+
+                ' Segunda columna: Objetivos generales, sin negrita
+                With tablaConseguido.Cell(filaTablaConseguido, 2).Range
+                    .Text = objetivos
+                    .Font.Color = wdColorBlack ' Asegurar que el texto sea visible (negro)
+                    .Font.Size = 11 ' Tamaño de fuente estándar
+                    .Font.Bold = False ' Quitar negrita
+                End With
+
+                ' Tercera columna: Vacía
+                With tablaConseguido.Cell(filaTablaConseguido, 3).Range
+                    .Text = ""
+                    .Font.Color = wdColorBlack ' Asegurar que no haya formato oculto
+                    .Font.Size = 11 ' Tamaño de fuente estándar
+                End With
+            End If
+        Next currentRow
+
+        ' Forzar el refresco de campos visibles en el documento
+        wordDoc.Fields.Update
+        wordDoc.Application.ScreenRefresh
+        
+    Else
+        MsgBox "No se encontró una tabla en el marcador 'UnidadesCompetenciaConseguido'."
+    End If
+Else
+    MsgBox "El marcador 'UnidadesCompetenciaConseguido' no se encontró en el documento."
+    wordDoc.Close False
+    wordApp.Quit
+    Exit Sub
+End If
+
+
+
 
     ' Pedirle al usuario un nombre para el archivo con un emoji en el mensaje
     nombreArchivo = InputBox("Ingrese el nombre del archivo (sin extensión): ??")
@@ -108,7 +176,7 @@ Sub RellenarPlantillaWordConMarcador()
     ' Cerrar la aplicación de Word
     wordApp.Quit
 
-    ' Informar al usuario que el archivo se ha guardado
+    ' Informar al usuario que el archivo se ha guardado en: " & savePath"
     MsgBox "El archivo se ha guardado en: " & savePath
 
 End Sub
