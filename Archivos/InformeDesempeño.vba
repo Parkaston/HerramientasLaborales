@@ -51,6 +51,35 @@ Sub RellenarPlantillaWordConMarcador()
 
     ' Llamar a la función para reemplazar controles de contenido por datos
     Call ReemplazarControlesContenido(wordDoc, ws)
+    
+    
+    ' Insertar contenido en el marcador "ItinerarioFormativo"
+On Error Resume Next
+Set marcadorItinerarioFormativo = wordDoc.Bookmarks("ItinerarioFormativo").Range
+On Error GoTo 0
+
+If Not marcadorItinerarioFormativo Is Nothing Then
+    ' Limpiar el contenido actual del marcador antes de insertar
+    marcadorItinerarioFormativo.Text = ""
+
+    ' Iterar sobre cada fila para obtener el código, nombre y horas del curso
+    For currentRow = 2 To lastRow ' Comienza en la fila 2 para evitar los títulos
+        codigo = ws.Cells(currentRow, 1).Value  ' Columna A: Código del curso
+        nombre = ws.Cells(currentRow, 2).Value  ' Columna B: Nombre del curso
+        horas = ws.Cells(currentRow, 5).Value   ' Columna E: Horas del curso
+
+        ' Saltar filas vacías
+        If codigo <> "" And nombre <> "" And horas <> "" Then
+            ' Insertar el contenido formateado en el marcador "ItinerarioFormativo"
+            marcadorItinerarioFormativo.InsertAfter codigo & ": " & nombre & " (" & horas & " horas)" & vbCrLf
+        End If
+    Next currentRow
+Else
+    MsgBox "El marcador 'ItinerarioFormativo' no se encontró en el documento."
+    wordDoc.Close False
+    wordApp.Quit
+    Exit Sub
+End If
 
     ' Tabla en el marcador "UnidadesCompetencia"
     On Error Resume Next
@@ -234,7 +263,8 @@ Sub ReemplazarControlesContenido(doc As Object, ws As Worksheet)
     mapeoCC.Add "EmailEmpresa", ws.Range("K6").Value
     mapeoCC.Add "TutorEmpresa", ws.Range("K8").Value
     mapeoCC.Add "TelefonoTutorEmpresa", ws.Range("K39").Value
-
+    mapeoCC.Add "SumatoriaDeHoras", ws.Range("K40").Value
+    
     ' Iterar sobre los controles de contenido del documento de Word
     For Each cc In doc.ContentControls
         If mapeoCC.Exists(cc.Title) Then
