@@ -1,0 +1,73 @@
+Sub ExportarAFormatoCSV()
+    Dim ws As Worksheet
+    Dim rutaArchivoExcel As String
+    Dim rutaCarpeta As String
+    Dim nombreArchivo As String
+    Dim fila As Long
+    Dim username As String
+    Dim password As String
+    Dim firstname As String
+    Dim lastname As String
+    Dim email As String
+    Dim archivoCSV As Object
+    Dim lineaCSV As String
+    
+    ' Asignar la hoja de trabajo (modificar si es otra)
+    Set ws = ThisWorkbook.Sheets("CALCULO") ' Cambia "CALCULO" si es otro nombre
+
+    ' Obtener la ruta del archivo actual
+    rutaArchivoExcel = ThisWorkbook.Path
+
+    ' Crear la carpeta "Archivos de salida" si no existe
+    rutaCarpeta = rutaArchivoExcel & "\Archivos de salida"
+    If Dir(rutaCarpeta, vbDirectory) = "" Then
+        MkDir rutaCarpeta
+    End If
+
+    ' Solicitar al usuario el nombre del archivo
+    nombreArchivo = InputBox("Ingrese el nombre del archivo (sin extensión): ")
+
+    ' Validar si se ingresó un nombre de archivo
+    If nombreArchivo = "" Then
+        MsgBox "Debe ingresar un nombre para el archivo."
+        Exit Sub
+    End If
+
+    ' Definir ruta completa para guardar el archivo CSV
+    Dim rutaCompleta As String
+    rutaCompleta = rutaCarpeta & "\" & nombreArchivo & ".csv"
+
+    ' Abrir un archivo de texto para escribir (creará el archivo CSV)
+    Set archivoCSV = CreateObject("Scripting.FileSystemObject").CreateTextFile(rutaCompleta, True)
+
+    ' Escribir la primera fila (encabezados)
+    archivoCSV.WriteLine "username,password,firstname,lastname,email"
+
+    ' Preparar los datos para la segunda fila
+    username = "cfa" & LCase(ws.Range("K13").Value) ' Concatenar "cfa" con el valor en K13 en minúsculas
+    password = "cfcom" ' Contraseña fija
+    firstname = UCase(ws.Range("K12").Value) ' Primer nombre en mayúsculas
+    lastname = UCase(ws.Range("K28").Value) ' Apellido en mayúsculas
+    email = ws.Range("K41").Value ' Email en K41
+
+    ' Escribir la segunda fila con los datos
+    lineaCSV = username & "," & password & "," & firstname & "," & lastname & "," & email
+    archivoCSV.WriteLine lineaCSV
+
+    ' Preparar los datos para la tercera fila
+    username3 = "tecnicoseguimientocfa" & LCase(ws.Range("K13").Value)
+    password3 = "tecnicoseguimientocfa" & LCase(ws.Range("K13").Value)
+    firstname3 = "TECNICO SEGUIMIENTO - " & UCase(ws.Range("K12").Value)
+    lastname3 = UCase(ws.Range("K28").Value)
+    email3 = "TECNICOSEGUIMIENTO" & UCase(ws.Range("K13").Value) & "@XXXX.COM"
+
+    ' Escribir la tercera fila con los datos
+    lineaCSV = username3 & "," & password3 & "," & firstname3 & "," & lastname3 & "," & email3
+    archivoCSV.WriteLine lineaCSV
+
+    ' Cerrar el archivo CSV
+    archivoCSV.Close
+
+    ' Notificar al usuario que el archivo se guardó
+    MsgBox "El archivo CSV se ha guardado en: " & rutaCompleta
+End Sub
