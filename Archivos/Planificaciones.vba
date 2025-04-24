@@ -1,6 +1,3 @@
-Sub InsertarDatosDesdeExcelEnWord()
-
-
 ' -----------------------------------------------------------
 ' Script: InsertarDatosDesdeExcelEnWord
 ' Autor: Guillermo Luna Alvarez
@@ -9,6 +6,10 @@ Sub InsertarDatosDesdeExcelEnWord()
 ' proviene de archivos externos y debe ser anonimizado antes de ser compartido.
 ' -----------------------------------------------------------
 
+
+
+
+Sub InsertarDatosDesdeExcelEnWord()
 
     ' Declaración de variables
     Dim wdApp As Object
