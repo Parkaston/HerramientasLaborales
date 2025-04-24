@@ -1,5 +1,15 @@
 Sub InsertarDatosDesdeExcelEnWord()
-    
+
+
+' -----------------------------------------------------------
+' Script: InsertarDatosDesdeExcelEnWord
+' Autor: Guillermo Luna Alvarez
+' Descripción: Este macro automatiza la inserción de datos desde un archivo Excel a un documento Word.
+' NOTA: Este código no contiene datos personales. Cualquier dato que se procese en tiempo de ejecución
+' proviene de archivos externos y debe ser anonimizado antes de ser compartido.
+' -----------------------------------------------------------
+
+
     ' Declaración de variables
     Dim wdApp As Object
     Dim wdDoc As Object
@@ -13,11 +23,11 @@ Sub InsertarDatosDesdeExcelEnWord()
     
     ' Ruta fija del archivo Word
     Dim pathWord As String
-    pathWord = "C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Planibase.docx" ' Cambia esta ruta a la ubicación del archivo Word fijo
+    pathWord = "C://RUTA DEL ARCHIVO//" ' Cambia esta ruta a la ubicación del archivo Word fijo
 
     ' Carpeta de salida predeterminada
     Dim outputFolder As String
-    outputFolder = "C:\Users\ContratoFor\Desktop\Pruebas pdf\Pruebas pdf\Archivos\Archivos de salida\" ' Cambia esta ruta a la carpeta de salida deseada
+    outputFolder = "//RUTA DE SALIDA DESEADA//" ' Cambia esta ruta a la carpeta de salida deseada
 
     ' Verifica si la carpeta de salida existe; si no, la crea
     If Dir(outputFolder, vbDirectory) = "" Then
@@ -62,7 +72,7 @@ Sub InsertarDatosDesdeExcelEnWord()
         With tbl.Rows.Add
             .Cells(1).Range.Text = codigo
             .Cells(2).Range.Text = denominacion & vbCrLf & "(" & horas & " horas)"
-            .Cells(5).Range.Text = "8000000705" & vbCrLf & "(Teleformación)" & vbCrLf & "Grupo cfcom 2.0, s.l"
+            .Cells(5).Range.Text = "" & vbCrLf & "(Teleformación)" & vbCrLf & ""
             .Cells(6).Range.Text = fechaInicio & "  A  " & fechaFin & vbCrLf & "(Teleformación)"
             .Cells(7).Range.Text = "NO TIENE SESIONES PRESENCIALES"
         End With
