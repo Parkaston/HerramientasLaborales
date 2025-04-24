@@ -1,3 +1,21 @@
+' ------------------------------------------------------------------------------
+' Script: ActualizarPlanFormativo
+' Autor: Guillermo Luna Alvarez
+' Descripción: Este macro combina múltiples documentos Word según una hoja Excel,
+'              pegando contenidos en un documento base y actualizando fechas específicas.
+'
+' Este archivo no contiene datos personales. Todos los valores provienen
+' de archivos externos (Excel/Word), y deben ser anonimizados si se usan
+' para pruebas públicas. No subir archivos adjuntos reales a repositorios públicos.
+'
+' Requiere:
+' - Word con controles de contenido ("FechaInicio", "FechaFin")
+' - Carpeta "Plantillas" con documentos .docx nombrados como se indica en la hoja Excel
+' - Carpeta "Archivos de salida" para guardar el documento final
+' ------------------------------------------------------------------------------
+
+
+
 Sub ActualizarPlanFormativo()
     Dim ws As Worksheet
     Dim wordApp As Object
