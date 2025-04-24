@@ -1,3 +1,26 @@
+' ------------------------------------------------------------------------------
+' Script: RellenarPlantillaWordConMarcador
+' Autor: Guillermo Luna Alvarez
+' Descripción: Este macro toma datos desde una hoja de Excel y los inserta en un
+'              documento de Word utilizando marcadores, tablas y controles de contenido.
+'
+' Funcionalidades:
+'   - Inserta cursos en formato de lista y en tablas en Word
+'   - Rellena controles de contenido como nombre, DNI, dirección, etc.
+'   - Genera un documento Word personalizado por alumno
+'
+' Este código no contiene datos sensibles. Todos los datos utilizados provienen de 
+' un archivo Excel externo que debe ser anonimizado si se comparte.
+'
+' Requisitos:
+'   - Word con marcadores definidos: "ItinerarioFormativo", "UnidadesCompetencia", etc.
+'   - Hoja "CALCULO" y hoja "Objetivos" en el archivo Excel
+'   - Plantilla Word "Plantilla 0.docx" ubicada junto al Excel
+' ------------------------------------------------------------------------------
+
+
+
+
 Sub RellenarPlantillaWordConMarcador()
     Dim ws As Worksheet
     Dim wsObjetivos As Worksheet
