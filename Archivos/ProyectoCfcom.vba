@@ -1,3 +1,32 @@
+' ------------------------------------------------------------------------------
+' Script: RellenarFormularioYCrearCuadros
+' Autor: [Tu Nombre o Alias]
+' Descripción: Este macro automatiza la generación de un documento Word a partir
+'              de datos estructurados en Excel. Rellena tablas y cuadros de texto 
+'              en diferentes secciones del documento, además de completar campos 
+'              mediante controles de contenido (content controls).
+'
+' Funcionalidades:
+'   - Genera tablas con datos formativos en Word desde una hoja Excel llamada "CALCULO"
+'   - Inserta cuadros de texto personalizados por fila (uno por centro de formación)
+'   - Rellena una tabla adicional con datos de actividad formativa
+'   - Completa controles de contenido de un Word con datos de Excel (campos tipo nombre, DNI, fechas, horarios, etc.)
+'   - Guarda el documento Word con el nombre elegido por el usuario
+'
+' Requisitos:
+'   - Excel y Word habilitados para macros (VBA)
+'   - Documento Word base con marcadores: "TerceraPagina", "CuartaPagina", "segundocuadro"
+'   - Hoja de Excel llamada "CALCULO" con datos estructurados
+'
+' NOTA DE SEGURIDAD:
+'   Este código no contiene datos personales reales. Todos los valores son extraídos
+'   dinámicamente desde el Excel. Asegúrate de no subir archivos Excel o Word con 
+'   datos reales a repositorios públicos. Se recomienda anonimizar los archivos de prueba.
+'
+' ------------------------------------------------------------------------------
+
+
+
 Sub RellenarFormularioYCrearCuadros()
     Dim wdApp As Object
     Dim wdDoc As Object
